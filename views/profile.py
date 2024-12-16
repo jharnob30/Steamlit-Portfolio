@@ -49,7 +49,7 @@ with col1:
 )
 
 with col2:
-    st.image("./assests/image2.jpg", width=200)
+    st.image("./assets/image2.jpg", width=200)
 
     
 # Work Experience Section

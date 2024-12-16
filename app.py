@@ -33,6 +33,19 @@ contact_page = st.Page(
     icon = ":material/email:",
 )
 
+photgraphy_page = st.Page(
+    page = "views/photography.py",
+    title = "My Captures",
+    icon = ":material/email:",
+)
+
+art_page = st.Page(
+    page = "views/art.py",
+    title = "Art and Illustrations",
+    icon = ":material/email:",
+)
+
+
 ##Projects-------------------------------------------------------------
 chatbot_project_page = st.Page(
     page = "views/projects/chatbot.py",
@@ -47,22 +60,28 @@ dashboard_project_page = st.Page(
 
 
 #Navigation Menu --------------------
-pg=st.navigation(pages=[profile_page, projects_page, blogs_page, contact_page])
+#pg=st.navigation(pages=[profile_page, projects_page, blogs_page, hobbies_page])
 
 
 
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "Jubayer Hossain Arnob": [profile_page, projects_page, blogs_page, contact_page],
+        "Jubayer Hossain Arnob": [profile_page, projects_page, blogs_page, contact_page, art_page, photgraphy_page],
         "Projects": [chatbot_project_page, dashboard_project_page],
     }
 )
 
 
-# --- SHARED ON ALL PAGES ---
-st.sidebar.markdown("Made with streamlit")
 
 
 #run_navigation ------------------
 pg.run()
+
+
+
+
+
+# --- SHARED ON ALL PAGES ---
+
+st.sidebar.markdown("")
