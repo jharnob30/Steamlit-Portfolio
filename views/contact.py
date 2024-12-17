@@ -22,8 +22,8 @@ def send_email(name, email_address, message):
     # Set up the SMTP server connection (example with Gmail SMTP)
     try:
         # Email credentials
-        smtp_user = st.secrets[smtp_user]  # Replace with your email
-        smtp_password = st.secrets[s]  # Replace with your password
+        smtp_user = "jubayer.arnob97@gmail.com"  # Replace with your email
+        smtp_password = "rxfqefmyfxdalmsd"  # Replace with your password
 
         # Set up SMTP server
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -81,17 +81,30 @@ contact_form()
         
 st.markdown(
     """
-    <div style="display: flex; gap: 0px; align-items: center;">
-        <a href="https://github.com/yourgithub" target="_blank" style="filter: grayscale(100%);">
+    <div style="margin-top: 10px;">
+        <a href="https://github.com/jharnob30?tab=repositories" target="_blank">
             <img src="https://img.icons8.com/ios-filled/30/000000/github.png" alt="GitHub">
         </a>
-        <a href="https://linkedin.com/in/yourlinkedin" target="_blank" style="filter: grayscale(100%); margin-left: 5px;">
-            <img src="https://img.icons8.com/ios-filled/30/0077B5/linkedin.png" alt="LinkedIn">
+        <a href="https://www.linkedin.com/feed/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/linkedin.png" alt="LinkedIn">
         </a>
-        <a href="https://behance.net/yourbehance" target="_blank" style="filter: grayscale(100%); margin-left: 5px;">
-            <img src="https://img.icons8.com/ios-filled/30/1769FF/behance.png" alt="Behance">
+        <a href="https://www.behance.net/jubayerarnob" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/behance.png" alt="Behance">
+        </a>
+        <a href="https://www.flickr.com/people/189515657@N03/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/flickr.png" alt="Flickr">
+        </a>
+        <a href="https://www.facebook.com/jubayerhossain.arnob.97/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/facebook.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/j_h_arnob/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/instagram-new.png" alt="Instagram">
+        </a>
+        <a href="https://studio.youtube.com/channel/UCAiYu2MOPo-hYy89ShNWyWQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/youtube-play.png" alt="YouTube">
         </a>
     </div>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
+
 )

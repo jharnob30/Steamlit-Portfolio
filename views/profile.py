@@ -1,6 +1,8 @@
 import streamlit as st
 from style import custom_css
 from views.contact import contact_form
+#from assets.profile.modal_resume import show_pdf
+
 
 @st.dialog(" ")
 def show_contact_form():
@@ -13,7 +15,7 @@ st.markdown(custom_css(), unsafe_allow_html=True)
 
 st.title("Jubayer Hossain Arnob")
 #Hero Section --------
-col1, col2 = st.columns([3, 1], gap="medium", vertical_alignment="center")
+col1, col2 = st.columns([3,1], gap="medium", vertical_alignment="center")
 
 # About Me Section
 with col1:
@@ -26,32 +28,57 @@ with col1:
         "focusing on advanced statistical analysis, machine learning, deep learning, and data visualization techniques."
     )
 
-    if st.button("Contact"):
-        show_contact_form()
-        
-    if st.button("Resume"):
-        ""
     st.markdown(
-    """
-    <div style="margin-top: 10px;">
-        <a href="https://github.com/yourgithub" target="_blank">
-            <img src="https://img.icons8.com/ios-filled/30/000000/github.png" alt="GitHub">
-        </a>
-        <a href="https://linkedin.com/in/yourlinkedin" target="_blank" style="margin-left: 10px;">
-            <img src="https://img.icons8.com/ios-filled/30/0077B5/linkedin.png" alt="LinkedIn">
-        </a>
-        <a href="https://behance.net/yourbehance" target="_blank" style="margin-left: 10px;">
-            <img src="https://img.icons8.com/ios-filled/30/1769FF/behance.png" alt="Behance">
-        </a>
-    </div>
-    """,
-    unsafe_allow_html=True,
+        """
+        <div style="margin-top: 10px;">
+            <a href="https://github.com/jharnob30?tab=repositories" target="_blank">
+                <img src="https://img.icons8.com/ios-filled/30/000000/github.png" alt="GitHub">
+            </a>
+            <a href="https://www.linkedin.com/feed/" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/linkedin.png" alt="LinkedIn">
+            </a>
+            <a href="https://www.behance.net/jubayerarnob" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/behance.png" alt="Behance">
+            </a>
+            <a href="https://www.flickr.com/people/189515657@N03/" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/flickr.png" alt="Flickr">
+            </a>
+            <a href="https://www.facebook.com/jubayerhossain.arnob.97/" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/facebook.png" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com/j_h_arnob/" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/instagram-new.png" alt="Instagram">
+            </a>
+            <a href="https://studio.youtube.com/channel/UCAiYu2MOPo-hYy89ShNWyWQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" target="_blank" style="margin-left: 10px;">
+                <img src="https://img.icons8.com/ios-filled/30/000000/youtube-play.png" alt="YouTube">
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
 )
+
+
 
 with col2:
     st.image("./assets/image2.jpg", width=200)
 
-    
+if st.button("Contact"):
+    show_contact_form()
+
+
+pdf_file = "assets/resume.pdf"
+
+# Trigger file download with proper MIME type
+st.download_button(
+    label="Download Resume",
+    data=open(pdf_file, "rb").read(),  # Read the file
+    file_name="Jubayer_Hossain_Resume.pdf",  # Name for the downloaded file
+    mime="application/pdf"  # MIME type for PDF
+)
+
+
+
+
 # Work Experience Section
 st.header("Work Experience")
 jobs = [

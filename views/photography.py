@@ -1,75 +1,92 @@
 import streamlit as st
+import requests
+from datetime import datetime
+from functools import lru_cache
 
-# Page Title
+# Replace with your Flickr API Key
+API_KEY = 'aa2df8738e2836736bb85876f495004b'
+
+# Flickr API Endpoints
+BASE_URL = "https://www.flickr.com/services/rest/"
+
+@st.cache_data
+def fetch_flickr_photos(user_id, page=1):
+    """Fetches photos from Flickr for a specific user."""
+    params = {
+        "method": "flickr.photos.search",
+        "api_key": API_KEY,
+        "user_id": user_id,
+        "page": page,
+        "format": "json",
+        "nojsoncallback": 1,
+        "extras": "tags,date_taken",
+    }
+    response = requests.get(BASE_URL, params=params)
+    if response.status_code == 200:
+        return response.json().get("photos", {}).get("photo", [])
+    else:
+        st.error("Failed to fetch photos from Flickr.")
+        return []
+
+def get_photo_url(photo):
+    """Constructs the photo URL."""
+    farm_id = photo['farm']
+    server_id = photo['server']
+    photo_id = photo['id']
+    secret = photo['secret']
+    return f"https://farm{farm_id}.staticflickr.com/{server_id}/{photo_id}_{secret}.jpg"
+
+def get_flickr_url(photo):
+    """Constructs the Flickr page URL."""
+    return f"https://www.flickr.com/photos/{photo['owner']}/{photo['id']}"
+
+# Replace with your Flickr user ID
+user_id = "189515657@N03"
+
+# Main Photography Gallery Page
 st.title("Jubayer Hossain's Photography Portfolio")
+st.markdown('''<h5>A collection of my photography captures for soul entertainment.<h5>''', unsafe_allow_html=True)
 
-# Improved Header for Art & Illustrations Section
+# Fetch photos from Flickr
+photos = fetch_flickr_photos(user_id)
 
-st.markdown('''<h5>A collection of my Captures for soul entertainment</h5>''', unsafe_allow_html=True)
+# Sidebar for filter options
+st.sidebar.title("Filter Photos")
+all_tags = set(tag for photo in photos for tag in photo.get("tags", "").split())
+tags_list = ["All"] + sorted(all_tags)
+selected_tag = st.sidebar.selectbox("Select Tag", tags_list)
 
-# Sample data for images (now supports both URL and local path)
-images = [
-    {
-        "source": "https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-6/470130049_2587580184785176_4922155773556246974_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHz61oTvd3ukRgYQDs01sA8VR9632dT3IVVH3rfZ1PchYekpuZRdeJ2cTOi3spxKxu3FaSJTkFjJHiDP3nR1qy4&_nc_ohc=MB87bPW2jZUQ7kNvgEsBxMH&_nc_zt=23&_nc_ht=scontent.fdac14-1.fna&_nc_gid=AIMkNU5fB7kfhD7Av44zCa3&oh=00_AYCUQMpoDkKnrIWQyQAMlctiVEvYbdb-oP53jNEMoGGnEg&oe=67666BBC",  # URL
-        "title": "Sunset Bliss", 
-        "date": "2023-06-12", 
-        "category": "Nature", 
-        "device": "Canon EOS 5D"
-    },
-    {
-        "source": "assets/image1.jpg",  # Local path
-        "title": "Urban Nightscape", 
-        "date": "2023-09-15", 
-        "category": "Cityscape", 
-        "device": "Sony A7 III"
-    },
-    {
-        "source": "https://scontent.fdac14-1.fna.fbcdn.net/v/t39.30808-6/470130049_2587580184785176_4922155773556246974_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHz61oTvd3ukRgYQDs01sA8VR9632dT3IVVH3rfZ1PchYekpuZRdeJ2cTOi3spxKxu3FaSJTkFjJHiDP3nR1qy4&_nc_ohc=MB87bPW2jZUQ7kNvgEsBxMH&_nc_zt=23&_nc_ht=scontent.fdac14-1.fna&_nc_gid=AIMkNU5fB7kfhD7Av44zCa3&oh=00_AYCUQMpoDkKnrIWQyQAMlctiVEvYbdb-oP53jNEMoGGnEg&oe=67666BBC",  # URL
-        "title": "Mountain Adventure", 
-        "date": "2023-07-08", 
-        "category": "Nature", 
-        "device": "Nikon D850"
-    },
-    {
-        "source": "assets/image2.jpg",  # Local path
-        "title": "Street Vibes", 
-        "date": "2023-10-21", 
-        "category": "Street", 
-        "device": "Fujifilm X-T4"
-    },
-]
+if photos:
+    # Filter photos based on selected tag
+    filtered_photos = [
+        photo for photo in photos
+        if selected_tag == "All" or selected_tag in photo.get("tags", "").split()
+    ]
 
-# Sidebar for filtering by category
-categories = sorted(set([image["category"] for image in images]))
-selected_category = st.sidebar.selectbox("Filter by Category", ["All"] + categories)
+    if filtered_photos:
+        num_columns = 3
+        cols = st.columns(num_columns)
 
-# Filter images based on the selected category
-filtered_images = images if selected_category == "All" else [img for img in images if img["category"] == selected_category]
+        for idx, photo in enumerate(filtered_photos):
+            photo_url = get_photo_url(photo)
+            title = photo.get('title', 'Untitled')
+            tags = photo.get('tags', 'No tags').replace(" ", ", ")
+            date_taken = photo.get('datetaken', 'Unknown')
+            flickr_url = get_flickr_url(photo)
 
-# Display Images
-st.header(f"Photographs ({selected_category if selected_category != 'All' else 'All Categories'})")
-cols = st.columns(4)
-
-# Loop through images and display with details
-for i, image in enumerate(filtered_images):
-    with cols[i % 4]:
-        # Check if the source is a URL or local path
-        if image["source"].startswith("http"):  # Check if the source is a URL
-            st.image(image["source"], caption=image["title"], use_container_width=True)
-        else:  # Local path
-            st.image(image["source"], caption=image["title"], use_container_width=True)
-        
-        st.caption(f"**Title:** {image['title']}  \n"
-                   f"**Capture Date:** {image['date']}  \n"
-                   f"**Category:** {image['category']}  \n"
-                   f"**Device:** {image['device']}")
-
-# Footer with Instagram link for full portfolio
-st.markdown("""
-    <div style="text-align: center; margin-top: 50px;">
-        <a href="https://www.instagram.com/j_h_arnob/" 
-           style="text-decoration: none; background-color: #3b5998; color: white; padding: 12px 24px; border-radius: 5px; font-size: 18px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: background-color 0.3s, transform 0.3s;">
-           View Full Photo Portfolio on Instagram
-        </a>
-    </div>
-""", unsafe_allow_html=True)
+            with cols[idx % num_columns]:
+                st.markdown(
+                    f'''
+                    <a href="{flickr_url}" target="_blank">
+                        <img src="{photo_url}" alt="{title}" style="width: 100%; border-radius: 5px; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);"/>
+                    </a>
+                    <h4 style="margin-bottom: -10px; font-size: 16px;">{title}</h4>
+                    <p style="font-size: 14px; margin: 0px; color: #555;">Date: {datetime.strptime(date_taken, '%Y-%m-%d %H:%M:%S').strftime('%B %d, %Y') if date_taken != 'Unknown' else 'Unknown'}</p>
+                    <p style="font-size: 14px; color: #777;">Tags: {tags}</p>
+                    ''',
+                    unsafe_allow_html=True
+                )
+    else:
+        st.warning("No photos match the selected tag.")
+else:
+    st.warning("No photos available to display.")
