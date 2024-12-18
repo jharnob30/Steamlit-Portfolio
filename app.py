@@ -85,7 +85,7 @@ dashboard_project_page = st.Page(
 # Navigation Menu ----------------
 pg = st.navigation(
     {
-        "Jubayer Hossain Arnob": [profile_page, projects_page, blogs_page, contact_page, art_page, photography_page],
+        "Jubayer Hossain Arnob": [profile_page, blogs_page, art_page, photography_page, contact_page],
        # "Projects": [chatbot_project_page, dashboard_project_page],
     }
 )

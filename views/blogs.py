@@ -1,98 +1,101 @@
 import streamlit as st
-from datetime import datetime
+import feedparser
+from bs4 import BeautifulSoup
 
-# Define the blogs with categories, titles, dates, and images
-blogs = [
-    {
-        "category": "AI/Technology",
-        "title": "AI-Generated Videos: Fun or Unsettling?",
-        "date": "2024-12-17",
-        "image": "assets/image2.jpg",  # Replace with your image path or URL
-        "content": """
-        Today, while scrolling through Facebook, I came across two AI-generated videos. In one, a bunch of pandas gathered around a dinner table enjoying ramen and beer. It looked fun, but it didn’t quite sit right with me—I’ll explain why. The other video showed a crew on a ship having fun with a baby polar bear, and it looked so real it genuinely freaked me out.
-        
-        Let’s get to the point why I didn’t like it much. I’m someone who values real, tangible experiences. When fantasy starts blending with reality in ways that make it hard to tell what’s real and what’s not, it’s unsettling. The idea that people could mistake something fake for something genuine is scary to me.
-        
-        These can be fun to watch, but on the other hand, AI-generated content mostly freaks me out. I don’t get much enjoyment or satisfaction from these things anymore.
-        """
-    },
-    {
-        "category": "Life",
-        "title": "A Day Full of Surprises: Blood Donation, Weddings, and Family Gatherings",
-        "date": "2024-12-16",
-        "image": "assets/image2.jpg",  # Replace with your image path or URL
-        "content": """
-        Today, I went to Gonoshasthaya Kendra for a blood donation. About half a week ago, my co-worker Dukul Bhai asked if I could help someone in need by donating blood, and I agreed. After our conversation, I told my family that I’d be going to Dhanmondi for the donation, and that’s when I found out we’d be celebrating my niece’s birthday on Friday with a family gathering. Then, when I met my friend Shahriour, he informed me that our friend Faiaz’s wedding was also scheduled for Friday, and I was invited as well. It felt like everything was happening on the same day!
-        
-        When I asked Dukul Bhai if he could find someone else to donate, he tried but couldn’t, so he asked again if I could come. I agreed to come around noon. I didn’t know the timing of the wedding, but I knew the birthday celebration would be from evening until night, so I planned to be back by 6 pm to help with the decorations.
-        
-        While I was traveling to Dhanmondi, my friends Araf and Shahriour called to check if I was coming to the wedding. That’s when I found out the wedding ceremony was right after Jumma, at noon! I had missed it. I told them I’d come as soon as I was done with the blood donation to at least spend 5-10 minutes with Faiaz.
-        
-        Now, I had to rush back to Uttara even faster to make it to both the wedding and the family party. The real problem was that, initially, I didn’t know about either the wedding or the family party, so I had already made plans with my girlfriend to go on a date after my donation. When I found out about everything today, I asked her if we could reschedule our date to next Friday, explaining that I needed to attend these events and couldn’t spend much time with her today. Unfortunately, this led to a fight, and now she’s upset. I’m starting to question if she’s really the understanding partner I need, and it’s making me nervous about the idea of marriage.
-        
-        The whole day felt like one mishap after another. To top it off, the person I was donating blood for was delayed with her paperwork, so I couldn’t leave the clinic until after 4 pm, even though I could’ve been done by 3:10 pm. That was when it became clear I wouldn’t be able to meet my girlfriend today, realizing that the delay would affect everything else. Luckily, I still managed to catch Faiaz for a couple of minutes before he left in his car. Now, I’m at the family party after helping with the decorations. Today has been quite a whirlwind!
-        """
-    },
-    {
-        "category": "Movies",
-        "title": "Perfect Days | My Favorite Movie of 2024",
-        "date": "2024-12-14",
-        "image": "assets/image2.jpg",  # Replace with your image path or URL
-        "content": """
-        A movie based on a simple life. It follows a solitary man, Hirayama, who finds comfort in a quiet, routine life. Though his days look the same, small changes remind us that no day is truly perfect. Hirayama silently carries his pain inside, but a visit from his niece stirs his emotions. In the end, as he drives to work, his expression reveals the emotions he's been keeping inside while maintaining his perfect days.
-        
-        **Hirayama’s admirable qualities:**
-        
-        1. Appreciation for Life
-        2. Contentment in Simplicity
-        3. Self-discipline
-        4. Mindfulness
-        5. Sense of responsibility.
-        
-        - Practicing these qualities can make anyone a better person.
-        
-        **Notable mindful activities:**
-        
-        1. Appreciating moments by capturing and organizing photos in a month-based library.
-        2. Reading a physical book each night, only buying a new one when he’s finished the last.
-        3. Keeping a collection of classical music cassettes, enjoying music on his way to work.
-        4. Observing nature in solitude, creating a soulful connection to the world around him.
-        
-        - Adopting some of these can lead to a more meaningful and fulfilling life experience.
-        
-        **Notable Quotes/ Words**
-        
-        1. Hirayama - "Next time is next time. Now is now."
-        2. KOMOREBI (Japanese Word) - means the shimmering of light and shadows that is created by leaves swaying in the wind. It only exists once, AT THAT MOMENT.
-        3. Businessman - One stop living when one no longer knows anything.
-        """
-    },
-]
+# Medium RSS feed URL (replace with your own Medium username)
+MEDIUM_RSS_URL = "https://medium.com/feed/@jubayerarnob97"
 
-# Sidebar for filtering by category
-categories = sorted(set([blog["category"] for blog in blogs]))
-selected_category = st.sidebar.selectbox("Filter by Category", ["All"] + categories)
+# Function to fetch blog posts from Medium using the RSS feed
+def fetch_medium_blogs():
+    # Parse the RSS feed
+    feed = feedparser.parse(MEDIUM_RSS_URL)
+    
+    # Extract relevant blog information
+    blogs = []
+    for entry in feed.entries:
+        blog = {
+            "title": entry.title,
+            "link": entry.link,
+            "summary": entry.summary,
+            "published": entry.published,
+            "content": entry.content[0].value,  # Full content with HTML
+            "topics": [tag['term'] for tag in entry.tags] if 'tags' in entry else []
+        }
+        blogs.append(blog)
+    
+    return blogs
 
-# Filter blogs based on the selected category
-filtered_blogs = blogs if selected_category == "All" else [blog for blog in blogs if blog["category"] == selected_category]
+# Function to clean HTML content, keeping structure but removing unwanted elements
+def clean_html(content):
+    soup = BeautifulSoup(content, "html.parser")
+    
+    # Remove image, script, and style tags
+    for img_tag in soup.find_all("img"):
+        img_tag.decompose()  # Remove images entirely
+    
+    for script in soup.find_all(["script", "style"]):
+        script.decompose()  # Remove script and style tags
+    
+    # Ensure the content retains paragraph, heading, and other text-based tags
+    for tag in soup.find_all(["figure", "style", "script"]):
+        tag.decompose()  # Remove unwanted tags but keep others
+    
+    # Remove <p> tags but keep the text inside
+    for p_tag in soup.find_all("p"):
+        p_tag.unwrap()  # Remove <p> tag but keep its contents
+    
+    # Return the cleaned HTML as string (preserving other important HTML structure)
+    return str(soup)
 
-# Display Blogs in expandable sections
-st.header(f"Blogs ({selected_category if selected_category != 'All' else 'All Categories'})")
-
-# Loop through blogs and display them in collapsible sections
-for blog in filtered_blogs:
-    with st.expander(f"{blog['title']} ({blog['category']})"):
-        # Display the image and content
-        col1, col2 = st.columns([3, 1])  # Adjust the ratio as per your requirement
-        with col2:
-            st.image(blog["image"], width=300)  # Image with consistent sizing
-        with col1:
-            # Format date and show a small snippet first
-            formatted_date = datetime.strptime(blog["date"], "%Y-%m-%d").strftime("%B %d, %Y")
-            st.markdown(f"**Date:** {formatted_date}")
-            st.markdown(f"**Category:** {blog['category']}")
-            st.markdown(f"{blog['content'][:300]}...")  # Show first 300 characters as an excerpt
+# Function to display blogs with a "Read Full Post" button
+def display_blogs(blogs, selected_topic=None):
+    st.title("Jubayer Hossain's Medium Blogs")
+    
+    # If the user selected a topic filter, show only matching blogs
+    if selected_topic:
+        blogs = [blog for blog in blogs if selected_topic.lower() in [topic.lower() for topic in blog['topics']]]
+    
+    # Show the filtered or all blogs
+    for blog in blogs:
+        # Clean the summary HTML and display the title, summary, and topics
+        clean_summary = clean_html(blog['summary'])
+        
+        st.subheader(blog['title'])
+        st.write(f"**Published on:** {blog['published']}")
+        st.write(f"**Summary:** {clean_summary[:150]}...")  # Show only a truncated summary of cleaned text
+        st.write(f"**Topics:** {', '.join(blog['topics']) if blog['topics'] else 'No topics'}")
+        
+        # Use an expander for the full content and add a link to the full blog post
+        with st.expander(f"Read Full Post: {blog['title']}"):
+            # Clean the content and render it as HTML
+            clean_content = clean_html(blog['content'])
+            st.markdown(f"<div>{clean_content}</div>", unsafe_allow_html=True)
             
-            # Button to open the full post
-            if st.button(f"Read full article: {blog['title']}"):
-                st.write(blog["content"])  # This will reveal the full content in the current view
+            # Create a styled "Read on Medium" button
+            st.markdown(f"<a href='{blog['link']}' target='_blank'><button style='background-color: #00ab6c; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px; cursor: pointer;'>Read on Medium</button></a>", unsafe_allow_html=True)
+        
+        st.write("---")
+
+# Function to filter blog posts by topics (in the sidebar)
+def filter_blogs_by_topic(blogs):
+    # Get all unique topics/tags
+    all_topics = set(topic for blog in blogs for topic in blog['topics'])
+    
+    # Display topic filter options in the sidebar
+    selected_topic = st.sidebar.selectbox(
+        "Filter by Topic",
+        ["All Topics"] + list(all_topics)  # Add "All Topics" as the default option
+    )
+    
+    if selected_topic != "All Topics":
+        return selected_topic
+    return None
+
+# Fetch blogs
+blogs = fetch_medium_blogs()
+
+# Show topic filter in the sidebar
+selected_topic = filter_blogs_by_topic(blogs)
+
+# Display blogs based on the selected filter
+display_blogs(blogs, selected_topic)

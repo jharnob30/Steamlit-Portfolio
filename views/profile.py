@@ -29,34 +29,37 @@ with col1:
     )
 
     st.markdown(
-        """
-        <div style="margin-top: 10px;">
-            <a href="https://github.com/jharnob30?tab=repositories" target="_blank">
-                <img src="https://img.icons8.com/ios-filled/30/000000/github.png" alt="GitHub">
-            </a>
-            <a href="https://www.linkedin.com/feed/" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/linkedin.png" alt="LinkedIn">
-            </a>
-            <a href="https://www.behance.net/jubayerarnob" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/behance.png" alt="Behance">
-            </a>
-            <a href="https://www.flickr.com/people/189515657@N03/" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/flickr.png" alt="Flickr">
-            </a>
-            <a href="https://www.facebook.com/jubayerhossain.arnob.97/" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/facebook.png" alt="Facebook">
-            </a>
-            <a href="https://www.instagram.com/j_h_arnob/" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/instagram-new.png" alt="Instagram">
-            </a>
-            <a href="https://studio.youtube.com/channel/UCAiYu2MOPo-hYy89ShNWyWQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" target="_blank" style="margin-left: 10px;">
-                <img src="https://img.icons8.com/ios-filled/30/000000/youtube-play.png" alt="YouTube">
-            </a>
-        </div>
-        """,
-        unsafe_allow_html=True
+    """
+    <div style="margin-top: 10px;">
+        <a href="https://github.com/jharnob30?tab=repositories" target="_blank">
+            <img src="https://img.icons8.com/ios-filled/30/000000/github.png" alt="GitHub">
+        </a>
+        <a href="https://www.linkedin.com/feed/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/linkedin.png" alt="LinkedIn">
+        </a>
+        <a href="https://www.behance.net/jubayerarnob" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/behance.png" alt="Behance">
+        </a>
+        <a href="https://www.flickr.com/people/189515657@N03/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/flickr.png" alt="Flickr">
+        </a>
+        <a href="https://www.facebook.com/jubayerhossain.arnob.97/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/facebook.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/j_h_arnob/" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/instagram-new.png" alt="Instagram">
+        </a>
+        <a href="https://studio.youtube.com/channel/UCAiYu2MOPo-hYy89ShNWyWQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/youtube-play.png" alt="YouTube">
+        </a>
+        <!-- Medium Icon -->
+        <a href="https://medium.com/@jubayerarnob97" target="_blank" style="margin-left: 10px;">
+            <img src="https://img.icons8.com/ios-filled/30/000000/medium-logo.png" alt="Medium">
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
-
 
 
 with col2:
