@@ -90,3 +90,23 @@ if photos:
         st.warning("No photos match the selected tag.")
 else:
     st.warning("No photos available to display.")
+
+
+st.markdown(
+    '''
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="https://www.flickr.com/photos/189515657@N03/" 
+           style="text-decoration: none; background-color: #3b5998; color: white; padding: 12px 24px; border-radius: 5px; font-size: 18px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); transition: background-color 0.3s, transform 0.3s;">
+           View Photos on Flickr
+        </a>
+    </div>
+    <style>
+        a:hover {{
+            background-color: #2d4373;
+            transform: scale(1.05);
+        }}
+    </style>
+    ''',
+    unsafe_allow_html=True
+)
+
