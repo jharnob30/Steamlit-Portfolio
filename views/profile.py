@@ -1,12 +1,7 @@
 import streamlit as st
 from style import custom_css
-from views.contact import contact_form
+
 #from assets.profile.modal_resume import show_pdf
-
-
-@st.dialog(" ")
-def show_contact_form():
-    contact_form()
 
 
 # Inject custom CSS
@@ -43,15 +38,6 @@ with col1:
         <a href="https://www.flickr.com/people/189515657@N03/" target="_blank" style="margin-left: 10px;">
             <img src="https://img.icons8.com/ios-filled/30/000000/flickr.png" alt="Flickr">
         </a>
-        <a href="https://www.facebook.com/jubayerhossain.arnob.97/" target="_blank" style="margin-left: 10px;">
-            <img src="https://img.icons8.com/ios-filled/30/000000/facebook.png" alt="Facebook">
-        </a>
-        <a href="https://www.instagram.com/j_h_arnob/" target="_blank" style="margin-left: 10px;">
-            <img src="https://img.icons8.com/ios-filled/30/000000/instagram-new.png" alt="Instagram">
-        </a>
-        <a href="https://studio.youtube.com/channel/UCAiYu2MOPo-hYy89ShNWyWQ/videos/upload?filter=%5B%5D&sort=%7B%22columnType%22%3A%22date%22%2C%22sortOrder%22%3A%22DESCENDING%22%7D" target="_blank" style="margin-left: 10px;">
-            <img src="https://img.icons8.com/ios-filled/30/000000/youtube-play.png" alt="YouTube">
-        </a>
         <!-- Medium Icon -->
         <a href="https://medium.com/@jubayerarnob97" target="_blank" style="margin-left: 10px;">
             <img src="https://img.icons8.com/ios-filled/30/000000/medium-logo.png" alt="Medium">
@@ -63,13 +49,11 @@ with col1:
 
 
 with col2:
-    st.image("./assets/image2.jpg", width=200)
-
-if st.button("Contact"):
-    show_contact_form()
+    st.image("assets/profile/dp3.JPG", width=200)
 
 
-pdf_file = "assets/resume.pdf"
+
+pdf_file = "assets/profile/resume.pdf"
 
 # Trigger file download with proper MIME type
 st.download_button(

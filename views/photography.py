@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import lru_cache
 
 # Replace with your Flickr API Key
-API_KEY = 'aa2df8738e2836736bb85876f495004b'
+API_KEY = st.secrets["photography"]["API_KEY"]
 
 # Flickr API Endpoints
 BASE_URL = "https://www.flickr.com/services/rest/"

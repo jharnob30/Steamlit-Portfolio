@@ -22,8 +22,8 @@ def send_email(name, email_address, message):
     # Set up the SMTP server connection (example with Gmail SMTP)
     try:
         # Email credentials
-        smtp_user = "jubayer.arnob97@gmail.com"  # Replace with your email
-        smtp_password = "rxfqefmyfxdalmsd"  # Replace with your password
+        smtp_user = st.secrets["email"]["smtp_user"]  # Replace with your email
+        smtp_password = st.secrets["email"]["smtp_password"]  # Replace with your password
 
         # Set up SMTP server
         server = smtplib.SMTP("smtp.gmail.com", 587)

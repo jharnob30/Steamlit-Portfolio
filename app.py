@@ -10,6 +10,7 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 
+
 # Login Section - Optional
 def login():
     """Handles user login if the user isn't already logged in."""
@@ -19,9 +20,10 @@ def login():
             username = st.text_input("Username")
             password = st.text_input("Password", type="password")
             submitted = st.form_submit_button("Login")
-            
+
+
             if submitted:
-                if username == "ocean97" and password == "1997":
+                if username == st.secrets["user"]["username"] and password == st.secrets["user"]["password"] :
                     st.session_state.logged_in = True
                     st.sidebar.success("You are logged in.")
                 else:
@@ -38,6 +40,8 @@ profile_page = st.Page(
     page="views/profile.py",
     title="Profile",
     icon=":material/account_circle:",
+        default=True,
+  # Make sure this is set to True to default to profile page
 )
 
 projects_page = st.Page(
@@ -86,7 +90,7 @@ dashboard_project_page = st.Page(
 pg = st.navigation(
     {
         "Jubayer Hossain Arnob": [profile_page, blogs_page, art_page, photography_page, contact_page],
-       # "Projects": [chatbot_project_page, dashboard_project_page],
+        # "Projects": [chatbot_project_page, dashboard_project_page],
     }
 )
 
@@ -96,6 +100,7 @@ pg.run()
 
 # Show Login logic - only trigger login features
 login()
+
 # Actions allowed for logged-in users
 if st.session_state.logged_in:
     st.sidebar.success("You are logged in. You can manage projects, edit content, etc.")
