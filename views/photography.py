@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-from datetime import datetime
-from functools import lru_cache
+from datetime import datetime, timedelta
 
 # Replace with your Flickr API Key
 API_KEY = st.secrets["photography"]["API_KEY"]
@@ -9,7 +8,8 @@ API_KEY = st.secrets["photography"]["API_KEY"]
 # Flickr API Endpoints
 BASE_URL = "https://www.flickr.com/services/rest/"
 
-@st.cache_data
+# Cache Flickr API calls with data clearing options
+@st.cache_data(ttl=1800)  # Auto-refresh every 30 minutes
 def fetch_flickr_photos(user_id, page=1):
     """Fetches photos from Flickr for a specific user."""
     params = {
@@ -28,6 +28,7 @@ def fetch_flickr_photos(user_id, page=1):
         st.error("Failed to fetch photos from Flickr.")
         return []
 
+# Utility functions
 def get_photo_url(photo):
     """Constructs the photo URL."""
     farm_id = photo['farm']
@@ -45,7 +46,11 @@ user_id = "189515657@N03"
 
 # Main Photography Gallery Page
 st.title("Jubayer Hossain's Photography Portfolio")
-st.markdown('''<h5>A collection of my photography captures for soul entertainment.<h5>''', unsafe_allow_html=True)
+st.markdown('''<h5>A collection of my photography captures for soul entertainment.</h5>''', unsafe_allow_html=True)
+
+# Sidebar for actions
+if st.sidebar.button("Refresh Photos"):
+    st.cache_data.clear()  # Clear cache to fetch new data
 
 # Fetch photos from Flickr
 photos = fetch_flickr_photos(user_id)
@@ -91,7 +96,7 @@ if photos:
 else:
     st.warning("No photos available to display.")
 
-
+# Footer with Flickr link
 st.markdown(
     '''
     <div style="text-align: center; margin-top: 30px;">
@@ -109,4 +114,3 @@ st.markdown(
     ''',
     unsafe_allow_html=True
 )
-
